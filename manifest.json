@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Succession",
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "default_locale": "en",
   "description": "Overtake the Snakeroom",
