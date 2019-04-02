@@ -17,7 +17,7 @@
   "homepage_url": "https://the-swarm.rocks",
 
   "permissions": [
-    "https://reddit.com/",``
+    "https://reddit.com/",
     "https://*.reddit.com/",
     "https://the-swarm.rocks/",
     "https://*.the-swarm.rocks/",
