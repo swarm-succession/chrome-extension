@@ -56,4 +56,5 @@ r.defineModule('succession_module', e => {
       }, 3000)
     }
   }
+  createWebSocket()
 })
