@@ -21,31 +21,39 @@ r.defineModule('succession_module', e => {
     api.sequenceVote(id)
     log(`submitted vote for ${id}`)
   }
-  const ws = new WebSocket(websocketUrl)
-  ws.onopen = () => {
-    log('websocket connected')
-    ws.send(
-      JSON.stringify({
-        event: 'CONNECTION',
-        username: r.config.logged // This is the users username.
-      })
-    )
-    setInterval(() => {
+  const createWebSocket = () => {
+    const ws = new WebSocket(websocketUrl)
+    ws.onopen = () => {
+      log('websocket connected')
       ws.send(
         JSON.stringify({
-          event: 'POLL'
+          event: 'CONNECTION',
+          username: r.config.logged // This is the users username.
         })
       )
-    }, 3 * 60 * 1000) // 3 minutes
-  }
-  ws.onmessage = msg => {
-    try {
-      let data = JSON.parse(msg.data)
-      if (data.event === 'VOTE_REQUEST') {
-        voteForID(data.post)
+      setInterval(() => {
+        ws.send(
+          JSON.stringify({
+            event: 'POLL'
+          })
+        )
+      }, 3 * 60 * 1000) // 3 minutes
+    }
+    ws.onmessage = msg => {
+      try {
+        let data = JSON.parse(msg.data)
+        if (data.event === 'VOTE_REQUEST') {
+          voteForID(data.post)
+        }
+      } catch (err) {
+        console.error(err)
       }
-    } catch (err) {
-      console.error(err)
+    }
+    ws.onclose = () => {
+      log('disconnected from server, reconnecting in 3 seconds')
+      setTimeout(() => {
+        createWebSocket()
+      }, 3000)
     }
   }
 })
